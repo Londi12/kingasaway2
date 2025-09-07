@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>King Aways | Pretoria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <h1><span class="crown">👑</span> King Aways</h1>
+    <nav>
+      <a href="#menu">Menu</a>
+      <a href="#cart-section">Order Online</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Taste the Royal Crunch in Pretoria!</h2>
+    <div class="hero-buttons">
+      <button class="order-btn" onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})">Order Direct</button>
+      <button class="mr-delivery-btn" onclick="window.open('https://www.mrd.com/delivery/restaurant/kingaways-trichardt/24007', '_blank')">
+        <img src="https://mrdelivery.co.za/assets/images/logo.png" alt="Mr Delivery" class="mr-delivery-logo">
+        Order on Mr Delivery
+      </button>
+      <button class="menu-btn" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">View Menu</button>
+    </div>
+  </section>
+
+  <section class="delivery-options">
+    <h2 class="section-title">Order Your Way</h2>
+    <div class="delivery-grid">
+      <div class="delivery-card">
+        <h3>🍔 Order Direct</h3>
+        <p>Order directly from us for the best prices and fastest service!</p>
+        <button class="order-direct-btn" onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})">Start Order</button>
+      </div>
+      <div class="delivery-card mr-delivery-card">
+        <img src="https://mrdelivery.co.za/assets/images/logo.png" alt="Mr Delivery" class="delivery-logo">
+        <h3>Available on Mr Delivery</h3>
+        <p>Order through Mr Delivery for convenient payment and tracking!</p>
+        <button class="mr-delivery-order-btn" onclick="window.open('https://www.mrd.com/delivery/restaurant/kingaways-trichardt/24007', '_blank')">Order on Mr Delivery</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu">
+    <h2 class="section-title">Our Menu</h2>
+
+    <!-- Specials -->
+    <div class="menu-category">
+      <h3 class="category-title">Specials</h3>
+      <div class="menu-grid">
+        <div class="menu-item" data-name="Fully Loaded Dagwood with Chips & Coke 440ml" data-price="99.95">
+          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Dagwood Special">
+          <h3>Fully Loaded Dagwood Special</h3>
+          <p>Ultimate Dagwood with chips and 440ml Coke.</p>
+          <button onclick="addToCart(this)">Add to Cart - R99.95</button>
+        </div>
+        <div class="menu-item" data-name="Cheese Burger with Chips & Coke 440ml" data-price="99.95">
+          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Cheese Burger Special">
+          <h3>Cheese Burger Special</h3>
+          <p>Juicy cheese burger with chips and Coke.</p>
+          <button onclick="addToCart(this)">Add to Cart - R99.95</button>
+        </div>
+        <div class="menu-item" data-name="Full Chicken with Large Chips, Large Salad & Coke 2L" data-price="199.95">
+          <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=600&q=80" alt="Full Chicken Special">
+          <h3>Full Chicken Special</h3>
+          <p>Full chicken, large chips, salad & 2L Coke.</p>
+          <button onclick="addToCart(this)">Add to Cart - R199.95</button>
+        </div>
+        <div class="menu-item" data-name="6 Fried Hot Wings, Chips & 440ml Coke" data-price="99.95">
+          <img src="https://images.unsplash.com/photo-1608039755401-742074f0548d?auto=format&fit=crop&w=600&q=80" alt="Hot Wings Special">
+          <h3>Hot Wings Special</h3>
+          <p>6 spicy wings with chips and Coke.</p>
+          <button onclick="addToCart(this)">Add to Cart - R99.95</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Burgers -->
+    <div class="menu-category">
+      <h3 class="category-title">Burgers</h3>
+      <div class="menu-grid">
+        <div class="menu-item" data-name="King Aways Burger" data-price="85">
+          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="King Aways Burger">
+          <h3>King Aways Burger</h3>
+          <p>200g burger with chips and special sauce.</p>
+          <button onclick="addToCart(this)">Add to Cart - R85</button>
+        </div>
+        <div class="menu-item" data-name="Deluxe Burger" data-price="85">
+          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Deluxe Burger">
+          <h3>Deluxe Burger</h3>
+          <p>Burger deluxe with chips and special sauce.</p>
+          <button onclick="addToCart(this)">Add to Cart - R85</button>
+        </div>
+        <div class="menu-item" data-name="Monster Burger" data-price="185">
+          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Monster Burger">
+          <h3>Monster Burger</h3>
+          <p>Monster burger with chips and special sauce.</p>
+          <button onclick="addToCart(this)">Add to Cart - R185</button>
+        </div>
+        <div class="menu-item" data-name="Boss Burger" data-price="115">
+          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Boss Burger">
+          <h3>Boss Burger</h3>
+          <p>Double beef (250g) with cheddar & 440ml Coke.</p>
+          <button onclick="addToCart(this)">Add to Cart - R115</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chicken & Wings -->
+    <div class="menu-category">
+      <h3 class="category-title">Chicken & Wings</h3>
+      <div class="menu-grid">
+        <div class="menu-item" data-name="Full Chicken" data-price="145">
+          <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=600&q=80" alt="Full Chicken">
+          <h3>Full Chicken</h3>
+          <p>Perfectly roasted for sharing.</p>
+          <button onclick="addToCart(this)">Add to Cart - R145</button>
+        </div>
+        <div class="menu-item" data-name="Half Chicken" data-price="80">
+          <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=600&q=80" alt="Half Chicken">
+          <h3>Half Chicken</h3>
+          <p>Juicy and flavorful portion.</p>
+          <button onclick="addToCart(this)">Add to Cart - R80</button>
+        </div>
+        <div class="menu-item" data-name="6 x Buffalo Wings & Chips" data-price="95">
+          <img src="https://images.unsplash.com/photo-1608039755401-742074f0548d?auto=format&fit=crop&w=600&q=80" alt="Buffalo Wings">
+          <h3>6 x Buffalo Wings & Chips</h3>
+          <p>Fiery wings with golden chips.</p>
+          <button onclick="addToCart(this)">Add to Cart - R95</button>
+        </div>
+        <div class="menu-item" data-name="Grilled Chicken Strips & Chips" data-price="85">
+          <img src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=600&q=80" alt="Chicken Strips">
+          <h3>Grilled Chicken Strips & Chips</h3>
+          <p>Tender grilled chicken strips with chips.</p>
+          <button onclick="addToCart(this)">Add to Cart - R85</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pizza -->
+    <div class="menu-category">
+      <h3 class="category-title">Classic Pizzas</h3>
+      <div class="menu-grid">
+        <div class="menu-item" data-name="Margarita Pizza" data-price="90">
+          <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80" alt="Margarita Pizza">
+          <h3>Margarita</h3>
+          <p>Classic tomato and mozzarella.</p>
+          <button onclick="addToCart(this)">Add to Cart - R90</button>
+        </div>
+        <div class="menu-item" data-name="Hawaiian Pizza" data-price="105">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?auto=format&fit=crop&w=600&q=80" alt="Hawaiian Pizza">
+          <h3>Hawaiian</h3>
+          <p>Ham and pineapple classic.</p>
+          <button onclick="addToCart(this)">Add to Cart - R105</button>
+        </div>
+        <div class="menu-item" data-name="Chicken Mayo Pizza" data-price="110">
+          <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80" alt="Chicken Mayo Pizza">
+          <h3>Chicken Mayo</h3>
+          <p>Chicken with creamy mayo base.</p>
+          <button onclick="addToCart(this)">Add to Cart - R110</button>
+        </div>
+        <div class="menu-item" data-name="Mexicana Pizza" data-price="110">
+          <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80" alt="Mexicana Pizza">
+          <h3>Mexicana</h3>
+          <p>Spicy Mexican-style pizza.</p>
+          <button onclick="addToCart(this)">Add to Cart - R110</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sides & Drinks -->
+    <div class="menu-category">
+      <h3 class="category-title">Sides & Drinks</h3>
+      <div class="menu-grid">
+        <div class="menu-item" data-name="Chips" data-price="39">
+          <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=600&q=80" alt="Chips">
+          <h3>Chips</h3>
+          <p>Crispy golden chips.</p>
+          <button onclick="addToCart(this)">Add to Cart - R39</button>
+        </div>
+        <div class="menu-item" data-name="Coke" data-price="22">
+          <img src="https://images.unsplash.com/photo-1581636625402-29b2a704ef13?auto=format&fit=crop&w=600&q=80" alt="Coke">
+          <h3>Coke</h3>
+          <p>Refreshing Coca-Cola.</p>
+          <button onclick="addToCart(this)">Add to Cart - From R22</button>
+        </div>
+        <div class="menu-item" data-name="Fish & Chips" data-price="95">
+          <img src="https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=600&q=80" alt="Fish & Chips">
+          <h3>Fish & Chips</h3>
+          <p>300g hake fillet with chips and tartar sauce.</p>
+          <button onclick="addToCart(this)">Add to Cart - R95</button>
+        </div>
+        <div class="menu-item" data-name="Full Rack Pork Ribs" data-price="179">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" alt="Pork Ribs">
+          <h3>Full Rack Pork Ribs</h3>
+          <p>Tender, juicy pork ribs.</p>
+          <button onclick="addToCart(this)">Add to Cart - R179</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cart-section">
+    <h2 class="section-title">Your Order</h2>
+    <div id="cart">
+      <h3>Cart</h3>
+      <div id="cart-items"></div>
+      <div id="total">Total: R0</div>
+      
+      <div id="customer-form" style="display: none;">
+        <h4>Delivery Details</h4>
+        <input type="text" id="customer-name" placeholder="Full Name" required>
+        <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+        <textarea id="customer-address" placeholder="Full Delivery Address" required></textarea>
+        <textarea id="order-notes" placeholder="Special Instructions (Optional)"></textarea>
+        <select id="payment-method">
+          <option value="cash">Cash on Delivery</option>
+          <option value="card">Card on Delivery</option>
+          <option value="eft">EFT</option>
+        </select>
+      </div>
+      
+      <button onclick="checkout()" class="checkout-btn">Proceed to Order</button>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">About King Aways</h2>
+    <p class="about-text">
+      Located in Villieria, Pretoria, King Aways brings the royal taste of fast food to our community. We pride ourselves on fresh ingredients, quick service, and affordable prices. Order online for fast delivery!
+    </p>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title">Contact & Delivery</h2>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <strong>📍 Location:</strong><br>
+        894 Ben Swart Street, Villieria, Pretoria, 0186
+      </div>
+      <div class="contact-card">
+        <strong>📱 WhatsApp Orders:</strong><br>
+        <a href="https://wa.me/27695530902" target="_blank">069 553 0902</a>
+      </div>
+      <div class="contact-card">
+        <strong>🚚 Delivery Area:</strong><br>
+        Pretoria and surrounding areas
+      </div>
+      <div class="contact-card">
+        <strong>⏰ Delivery Time:</strong><br>
+        30-45 minutes
+      </div>
+    </div>
+    
+    <div class="map-container">
+      <h3>Find Us</h3>
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.123456789!2d28.123456!3d-25.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDA3JzI0LjQiUyAyOMKwMDcnMjQuNCJF!5e0!3m2!1sen!2sza!4v1234567890123!5m2!1sen!2sza" 
+        width="100%" 
+        height="300" 
+        style="border:0;border-radius:10px;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 King Aways | Follow us: 
+      <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="https://wa.me/27695530902" target="_blank">WhatsApp</a>
+    </p>
+  </footer>
+
+  <!-- Floating Cart -->
+  <div id="floating-cart" class="floating-cart">
+    <div class="cart-header" onclick="toggleCart()">
+      <span>🛒 Cart (<span id="cart-count">0</span>)</span>
+      <span id="cart-toggle">▼</span>
+    </div>
+    <div id="floating-cart-items" class="cart-content">
+      <div id="mini-cart-items"></div>
+      <div id="mini-total">Total: R0</div>
+      <button onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})" class="view-cart-btn">View Full Cart</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
