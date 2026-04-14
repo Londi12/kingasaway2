@@ -1,0 +1,1 @@
+# kingasaway2 Project&#10;&#10;Cloned from https://github.com/londi12/kingasaway2 to connect to https://londi12.github.io/kingasaway2/&#10;&#10;## Setup&#10;1. cd kingasaway2&#10;2. Open index.html or use live server for local development.&#10;&#10;Live site: https://londi12.github.io/kingasaway2/

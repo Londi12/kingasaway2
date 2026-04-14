@@ -1,4 +1,4 @@
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
 function addToCart(button) {
   const item = button.closest('.menu-item');
@@ -92,60 +92,55 @@ function renderCart() {
 function updateQty(name, change) {
   const item = cart.find(i => i.name === name);
   if (item) {
-    item.qty += change;
-    if (item.qty <= 0) {
-      removeFromCart(name);
-    } else {
-      renderCart();
-    }
-  }
-}
+    // Load and render dynamic menu from menu.csv
+    async function loadDynamicMenu() {
+      try {
+        const response = await fetch('menu.csv');
+        const csvText = await response.text();
+        const lines = csvText.trim().split('\n').slice(1); // Skip header
+        const menuMap = new Map();
 
-function checkout() {
-  if (cart.length === 0) {
-    alert('Your cart is empty!');
-    return;
-  }
-  
-  const name = document.getElementById('customer-name').value.trim();
-  const phone = document.getElementById('customer-phone').value.trim();
-  const address = document.getElementById('customer-address').value.trim();
-  const notes = document.getElementById('order-notes').value.trim();
-  const payment = document.getElementById('payment-method').value;
-  
-  if (!name || !phone || !address) {
-    alert('Please fill in all required fields (Name, Phone, Address)');
-    return;
-  }
-  
-  const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-  const orderDetails = cart.map(item => `${item.name} x ${item.qty} = R${(item.price * item.qty).toFixed(2)}`).join('\n');
-  
-  const whatsappMessage = `🍔 *NEW ORDER - King Aways*\n\n` +
-    `👤 *Customer:* ${name}\n` +
-    `📱 *Phone:* ${phone}\n` +
-    `📍 *Address:* ${address}\n` +
-    `💳 *Payment:* ${payment.charAt(0).toUpperCase() + payment.slice(1)}\n\n` +
-    `🛒 *ORDER DETAILS:*\n${orderDetails}\n\n` +
-    `💰 *TOTAL: R${total.toFixed(2)}*\n\n` +
-    (notes ? `📝 *Notes:* ${notes}\n\n` : '') +
-    `⏰ Order placed: ${new Date().toLocaleString()}`;
-  
-  const whatsappUrl = `https://wa.me/27695530902?text=${encodeURIComponent(whatsappMessage)}`;
-  
-  const confirmed = confirm(`Order Summary:\n${orderDetails}\n\nTotal: R${total.toFixed(2)}\n\nThis will open WhatsApp to send your order. Continue?`);
-  
-  if (confirmed) {
-    window.open(whatsappUrl, '_blank');
-    alert('Order sent to WhatsApp! We will confirm your order shortly.');
-    cart = [];
-    document.getElementById('customer-name').value = '';
-    document.getElementById('customer-phone').value = '';
-    document.getElementById('customer-address').value = '';
-    document.getElementById('order-notes').value = '';
-    renderCart();
-  }
-}
+        lines.forEach(line => {
+          const [category, item, description, priceStr] = line.split(',');
+          const price = parseFloat(priceStr);
+          if (!menuMap.has(category)) menuMap.set(category, []);
+          menuMap.get(category).push({item, description, price});
+        });
+
+        const grid = document.getElementById('dynamic-menu-grid');
+        menuMap.forEach((items, category) => {
+          const catDiv = document.createElement('div');
+          catDiv.className = 'menu-subcategory';
+          catDiv.innerHTML = `<h4 class="subcategory-title">${category}</h4>`;
+          const subGrid = document.createElement('div');
+          subGrid.className = 'menu-grid';
+          items.slice(0,8).forEach(({item, description, price}) => { // Limit 8 per cat
+            const div = document.createElement('div');
+            div.className = 'menu-item';
+            div.dataset.name = item;
+            div.dataset.price = price;
+            div.innerHTML = `
+              <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?auto=format&fit=crop&w=600&q=80" alt="${item}" style="filter: brightness(1.1);">
+              <h3>${item}</h3>
+              <p>${description}</p>
+              <button onclick="addToCart(this)">Add to Cart - R${price.toFixed(2)}</button>
+            `;
+            subGrid.appendChild(div);
+          });
+          catDiv.appendChild(subGrid);
+          grid.appendChild(catDiv);
+        });
+      } catch (err) {
+        console.error('Failed to load menu.csv:', err);
+        document.getElementById('dynamic-menu').innerHTML += '<p style="text-align:center;color:#ccc;">Full menu loading...</p>';
+      }
+    }
+
+    // Initialize cart on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCart();
+      loadDynamicMenu();
+    });
 
 // Smooth scroll function
 function scrollToMenu() {
@@ -171,7 +166,59 @@ function toggleCart() {
   }
 }
 
+<<<<<<< HEAD
 // Initialize cart on page load
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
 });
+=======
+// Load and render dynamic menu from menu.csv
+async function loadDynamicMenu() {
+  try {
+    const response = await fetch('menu.csv');
+    const csvText = await response.text();
+    const lines = csvText.trim().split('\n').slice(1); // Skip header
+    const menuMap = new Map();
+
+    lines.forEach(line => {
+      const [category, item, description, priceStr] = line.split(',');
+      const price = parseFloat(priceStr);
+      if (!menuMap.has(category)) menuMap.set(category, []);
+      menuMap.get(category).push({item, description, price});
+    });
+
+    const grid = document.getElementById('dynamic-menu-grid');
+    menuMap.forEach((items, category) => {
+      const catDiv = document.createElement('div');
+      catDiv.className = 'menu-subcategory';
+      catDiv.innerHTML = `<h4 class="subcategory-title">${category}</h4>`;
+      const subGrid = document.createElement('div');
+      subGrid.className = 'menu-grid';
+      items.slice(0,8).forEach(({item, description, price}) => { // Limit 8 per cat
+        const div = document.createElement('div');
+        div.className = 'menu-item';
+        div.dataset.name = item;
+        div.dataset.price = price;
+        div.innerHTML = `
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?auto=format&fit=crop&w=600&q=80" alt="${item}" style="filter: brightness(1.1);">
+          <h3>${item}</h3>
+          <p>${description}</p>
+          <button onclick="addToCart(this)">Add to Cart - R${price.toFixed(2)}</button>
+        `;
+        subGrid.appendChild(div);
+      });
+      catDiv.appendChild(subGrid);
+      grid.appendChild(catDiv);
+    });
+  } catch (err) {
+    console.error('Failed to load menu.csv:', err);
+    document.getElementById('dynamic-menu').innerHTML += '<p style="text-align:center;color:#ccc;">Full menu loading...</p>';
+  }
+}
+
+// Initialize cart on page load
+document.addEventListener('DOMContentLoaded', () => {
+  renderCart();
+  loadDynamicMenu();
+});
+>>>>>>> 93d01d7 (Redesign header and hero section with new topbar, logo fallback, hero--photo layout, cart-widget, and gold/dark theme styles)

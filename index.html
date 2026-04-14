@@ -9,27 +9,66 @@
 </head>
 <body>
 
-  <header>
-    <h1><span class="crown">👑</span> King Aways</h1>
-    <nav>
-      <a href="#menu">Menu</a>
-      <a href="#cart-section">Order Online</a>
-      <a href="#about">About Us</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h2>Taste the Royal Crunch in Pretoria!</h2>
-    <div class="hero-buttons">
-      <button class="order-btn" onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})">Order Direct</button>
-      <button class="mr-delivery-btn" onclick="window.open('https://www.mrd.com/delivery/restaurant/kingaways-trichardt/24007', '_blank')">
-        <img src="https://mrdelivery.co.za/assets/images/logo.png" alt="Mr Delivery" class="mr-delivery-logo">
-        Order on Mr Delivery
-      </button>
-      <button class="menu-btn" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">View Menu</button>
+  <header class="topbar">
+  <!-- Option A (recommended): use an image logo -->
+  <div class="brand">
+    <img class="brand__logo" src="assets/logo.png" alt="King Aways" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+    <!-- Option B fallback: text logo (shows automatically if logo image is missing) -->
+    <div class="brand__textWrap" style="display:none; align-items:center; gap:10px;">
+      <span class="brand__text">KING</span>
+      <span class="brand__crown" aria-hidden="true">👑</span>
+      <span class="brand__text">AWAYS</span>
     </div>
-  </section>
+  </div>
+
+  <nav class="nav">
+    <a href="#menu">Menu</a>
+    <a href="#cart-section">Order Online</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact</a>
+    <a href="#cart-section" class="nav__account">Account/Login</a>
+  </nav>
+</header>
+
+<section class="hero hero--photo">
+  <div class="hero__inner">
+    <h2 class="hero__title">
+      Taste the Royal Crunch<br />
+      <span>in Pretoria!</span>
+    </h2>
+
+    <p class="hero__sub">🚀 NEW! Order Direct for 10% OFF first order! 👑</p>
+
+    <div class="hero__cta">
+      <button class="btn btn--ghost" onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})">
+        Order Direct
+      </button>
+
+      <a class="btn btn--ghost" href="https://www.mrd.com/delivery/restaurant/kingaways-trichardt/24007" target="_blank">
+        Order on Mr D
+      </a>
+    </div>
+
+    <a class="hero__link" href="#menu">View Full Menu</a>
+  </div>
+
+  <div class="hero__right">
+    <div class="social">
+      <a href="#" aria-label="Facebook">f</a>
+      <a href="#" aria-label="Instagram">◎</a>
+    </div>
+
+    <aside class="cart-widget">
+      <div class="cart-widget__icon" aria-hidden="true">👜</div>
+      <div class="cart-widget__title">Your Royal Cart is<br/>Empty</div>
+      <a class="btn btn--outline" href="#cart-section">View Cart</a>
+    </aside>
+  </div>
+
+  <button class="floating-order" onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})">
+    Order Now
+  </button>
+</section>
 
   <section class="delivery-options">
     <h2 class="section-title">Order Your Way</h2>
@@ -205,6 +244,19 @@
         </div>
       </div>
     </div>
+    <!-- Dynamic Menu from CSV -->
+    <div id="dynamic-menu" class="menu-category">
+      <h3 class="category-title">Full Menu</h3>
+      <div id="dynamic-menu-grid" class="menu-grid"></div>
+    </div>
+=======
+
+    <!-- Dynamic Menu from CSV -->
+    <div id="dynamic-menu" class="menu-category">
+      <h3 class="category-title">Full Menu</h3>
+      <div id="dynamic-menu-grid" class="menu-grid"></div>
+    </div>
+>>>>>>> 93d01d7 (Redesign header and hero section with new topbar, logo fallback, hero--photo layout, cart-widget, and gold/dark theme styles)
   </section>
 
   <section id="cart-section">
@@ -262,7 +314,10 @@
     <div class="map-container">
       <h3>Find Us</h3>
       <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.123456789!2d28.123456!3d-25.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDA3JzI0LjQiUyAyOMKwMDcnMjQuNCJF!5e0!3m2!1sen!2sza!4v1234567890123!5m2!1sen!2sza" 
+src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.693513473758!2d28.286997615262!3d-25.726758791569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956a4d3b5b2c7d%3A0x7b3e5b0a8a0b4d5c!2s894%20Ben%20Swart%20St%2C%20Villieria%2C%20Pretoria%2C%200186%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1720800000000!5m2!1sen!2sza"
+=======
+src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.693513473758!2d28.286997615262!3d-25.726758791569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956a4d3b5b2c7d%3A0x7b3e5b0a8a0b4d5c!2s894%20Ben%20Swart%20St%2C%20Villieria%2C%20Pretoria%2C%200186%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1720800000000!5m2!1sen!2sza"
+>>>>>>> 93d01d7 (Redesign header and hero section with new topbar, logo fallback, hero--photo layout, cart-widget, and gold/dark theme styles)
         width="100%" 
         height="300" 
         style="border:0;border-radius:10px;" 

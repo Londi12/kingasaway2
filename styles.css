@@ -1,4 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@400;600;700&display=swap');
+/* ===== King Aways - Header/Hero (Screenshot style) ===== */
+
+:root{
+  --gold: #c9a24a;
+  --gold2: #f3d27a;
+  --dark: #0c0c0f;
+  --glass: rgba(20, 20, 24, 0.72);
+  --glass2: rgba(20, 20, 24, 0.45);
+  --text: #f2f2f2;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@400;600;700&family=Georgia&display=swap');
 
 * { 
   margin: 0; 
@@ -8,8 +19,8 @@
 
 body { 
   font-family: 'Open Sans', sans-serif; 
-  background: #fff; 
-  color: #000; 
+  background: linear-gradient(to bottom, #000000, #111111); 
+  color: #ffffff; 
   line-height: 1.6;
 }
 
@@ -29,7 +40,6 @@ header {
   top: 0; 
   z-index: 100; 
   box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  border-bottom: 3px solid #FFD700;
 }
 
 header h1 { 
@@ -273,6 +283,19 @@ section {
   color: #555; 
 }
 
+.menu-subcategory {
+  margin-bottom: 3rem;
+}
+
+.subcategory-title {
+  color: #FFD700 !important;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  font-family: 'Anton', sans-serif !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
 .menu-item button { 
   margin-bottom: 1rem; 
   padding: 0.8rem 1.5rem; 
@@ -348,12 +371,12 @@ section {
   margin-bottom: 0.5rem;
 }
 
-.qty-controls {
+ qty-controls {
   display: flex;
   gap: 0.3rem;
 }
 
-.qty-controls button { 
+ qty-controls button { 
   background-color: #E41C23; 
   color: #fff; 
   border: none; 
@@ -376,6 +399,26 @@ section {
   z-index: 1000;
   max-width: 300px;
   display: block;
+}
+
+@media (min-width: 1025px) {
+  #cart-section {
+    display: flex;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  #cart {
+    flex: 0 0 400px;
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+  }
+  
+  .floating-cart {
+    right: 40px;
+  }
 }
 
 .cart-header {
@@ -454,6 +497,41 @@ section {
   border-radius: 5px;
   font-family: inherit;
   font-size: 0.9rem;
+}
+
+#customer-form input::placeholder,
+#customer-form textarea::placeholder {
+  color: #aaa;
+}
+
+.promo-banner {
+  background: linear-gradient(90deg, #FFD700, #E41C23);
+  color: #000;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+  animation: pulse 2s infinite;
+  text-align: center;
+  max-width: 100%;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.contact-card {
+  background: #222222 !important;
+  color: #fff !important;
+  border: 1px solid #333;
+}
+
+.map-container iframe {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 #customer-form textarea {
