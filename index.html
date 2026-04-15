@@ -161,10 +161,6 @@
             <div class="px-4 pt-2 pb-6 space-y-2">
                 <a href="#menu" class="block px-3 py-2 text-gray-300 hover:text-yellow-500 hover:bg-gray-800 rounded-md transition-colors">Menu</a>
                 <a href="#get-in-touch" class="block px-3 py-2 text-gray-300 hover:text-yellow-500 hover:bg-gray-800 rounded-md transition-colors">Contact</a>
-                <button id="mobile-cart-btn" class="w-full flex items-center justify-between px-3 py-2 text-gray-300 hover:text-yellow-500 hover:bg-gray-800 rounded-md transition-colors">
-                    <span>Cart</span>
-                    <span id="mobile-cart-count" class="bg-yellow-500 text-gray-900 text-xs font-bold rounded-full px-2 py-1 hidden">0</span>
-                </button>
             </div>
         </div>
     </nav>
@@ -202,11 +198,15 @@
             </a>
         </div>
 
-        <!-- Floating Cart Widget removed -->
-
-        <!-- Floating Order Button Mobile -->
-
-
+        <!-- Mobile Floating Cart -->
+        <button id="mobile-floating-cart-btn" onclick="openCartModal()" class="md:hidden fixed bottom-6 right-4 z-50 flex items-center gap-2 rounded-full bg-yellow-500 text-gray-900 px-4 py-3 shadow-2xl font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <span>Cart</span>
+            <span id="mobile-floating-cart-total" class="text-sm">R0.00</span>
+            <span id="mobile-floating-cart-count" class="bg-gray-900 text-yellow-400 text-xs font-bold rounded-full px-2 py-1 hidden">0</span>
+        </button>
 
     </section>
 
