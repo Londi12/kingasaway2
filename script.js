@@ -52,13 +52,14 @@ function checkout() {
   }
 
   // Gather order details
-  let orderDetails = cart.map(item => `- ${item.name} (x${item.qty}) - R${(item.price * item.qty).toFixed(2)}`).join('\n');
+  let orderDetails = cart.map(item => `- ${item.name} (x${item.qty}) - R${(item.price * item.qty).toFixed(2)}`).join('\r\n');
   let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const notes = document.getElementById('order-notes')?.value.trim() || '';
   const payment = document.getElementById('payment-method')?.value || '';
-  let message = `*New Order*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}`;
-  if (notes) message += `\n*Notes:* ${notes}`;
-  message += `\n\n*Order:*\n${orderDetails}\n\n*Total:* R${total.toFixed(2)}\n*Payment:* ${payment}`;
+  let message = `*New Order*\r\n\r\n*Name:* ${name}\r\n*Phone:* ${phone}\r\n*Address:* ${address}`;
+  if (notes) message += `\r\n*Notes:* ${notes}`;
+  message += `\r\n\r\n*Order:*\r\n${orderDetails}\r\n\r\n*Total:* R${total.toFixed(2)}\r\n*Payment:* ${payment}`;
+  console.log('WhatsApp message:', message); // Debug output
   // WhatsApp South Africa: 0695530902 (country code 27, drop leading 0)
   const waNumber = '27695530902';
   const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
@@ -333,13 +334,14 @@ function checkoutModal() {
   }
 
   // Gather order details
-  let orderDetails = cart.map(item => `- ${item.name} (x${item.qty}) - R${(item.price * item.qty).toFixed(2)}`).join('\n');
+  let orderDetails = cart.map(item => `- ${item.name} (x${item.qty}) - R${(item.price * item.qty).toFixed(2)}`).join('\r\n');
   let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const notes = document.getElementById('order-notes-modal')?.value.trim() || '';
   const payment = document.getElementById('payment-method-modal')?.value || '';
-  let message = `*New Order*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}`;
-  if (notes) message += `\n*Notes:* ${notes}`;
-  message += `\n\n*Order:*\n${orderDetails}\n\n*Total:* R${total.toFixed(2)}\n*Payment:* ${payment}`;
+  let message = `*New Order*\r\n\r\n*Name:* ${name}\r\n*Phone:* ${phone}\r\n*Address:* ${address}`;
+  if (notes) message += `\r\n*Notes:* ${notes}`;
+  message += `\r\n\r\n*Order:*\r\n${orderDetails}\r\n\r\n*Total:* R${total.toFixed(2)}\r\n*Payment:* ${payment}`;
+  console.log('WhatsApp message:', message); // Debug output
   // WhatsApp South Africa: 0695530902 (country code 27, drop leading 0)
   const waNumber = '27695530902';
   const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
