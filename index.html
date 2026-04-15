@@ -3,351 +3,318 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>King Aways | Pretoria</title>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<title>King Aways | Pretoria</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gold-border {
+            border: 2px solid #D4AF37;
+        }
+        .gold-border-thin {
+            border: 1px solid #D4AF37;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 2px solid #D4AF37;
+            color: #D4AF37;
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            background: #D4AF37;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+        .btn-solid-gold {
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #B8860B 100%);
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+        .btn-solid-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+        .cart-widget {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #D4AF37;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .floating-order-btn {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+        }
+        .sparkle {
+            animation: sparkle 2s infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+.crown-icon {
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+        }
+
+        .floating-cart {
+            position: fixed;
+            right: 1.5rem;
+            top: 6rem;
+            z-index: 50;
+        }
+        @media (max-width: 1024px) {
+            .floating-cart {
+                display: none;
+            }
+        }
+
+        .mr-d-logo {
+            background: #00A0E3;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-900 text-white overflow-x-hidden">
 
-  <header class="topbar">
-  <!-- Option A (recommended): use an image logo -->
-  <div class="brand">
-    <img class="brand__logo" src="assets/logo.png" alt="King Aways" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-    <!-- Option B fallback: text logo (shows automatically if logo image is missing) -->
-    <div class="brand__textWrap" style="display:none; align-items:center; gap:10px;">
-      <span class="brand__text">KING</span>
-      <span class="brand__crown" aria-hidden="true">👑</span>
-      <span class="brand__text">AWAYS</span>
-    </div>
-  </div>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2 cursor-pointer group">
+                                        <span class="text-3xl font-black tracking-tighter text-gray-300 group-hover:text-white transition-colors">KING</span>
+        <svg class="w-10 h-10 crown-icon text-yellow-500 group-hover:scale-110 transition-transform" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g>
+                <!-- 3-pronged crown -->
+                <path d="M8 26L16 10L24 20L32 10L40 26Z" fill="#FFD700" stroke="#BFA14A" stroke-width="2" stroke-linejoin="round"/>
+                <circle cx="16" cy="10" r="2" fill="#FFD700" stroke="#BFA14A" stroke-width="1"/>
+                <circle cx="24" cy="20" r="2.2" fill="#FFD700" stroke="#BFA14A" stroke-width="1"/>
+                <circle cx="32" cy="10" r="2" fill="#FFD700" stroke="#BFA14A" stroke-width="1"/>
+            </g>
+            <rect x="12" y="26" width="24" height="4" rx="2" fill="#FFD700" stroke="#BFA14A" stroke-width="1"/>
+        </svg>
+                    <span class="text-3xl font-black tracking-tighter text-gray-300 group-hover:text-white transition-colors">AWAYS</span>
+                </div>
 
-  <nav class="nav">
-    <a href="#menu">Menu</a>
-    <a href="#cart-section">Order Online</a>
-    <a href="#about">About Us</a>
-    <a href="#contact">Contact</a>
-    <a href="#cart-section" class="nav__account">Account/Login</a>
-  </nav>
-</header>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#menu" class="nav-link text-gray-300 hover:text-white font-medium transition-colors">Menu</a>
+                    <a href="#get-in-touch" class="nav-link text-gray-300 hover:text-white font-medium transition-colors">Contact</a>
+                    <button id="cart-nav-btn" class="relative nav-link text-gray-300 hover:text-yellow-400 font-medium flex items-center focus:outline-none" aria-label="View Cart">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                        <span id="cart-nav-count" class="absolute -top-2 -right-2 bg-yellow-500 text-gray-900 text-xs font-bold rounded-full px-1.5 py-0.5 hidden">0</span>
+                    </button>
+                </div>
 
-<section class="hero hero--photo">
-  <div class="hero__inner">
-    <h2 class="hero__title">
-      Taste the Royal Crunch<br />
-      <span>in Pretoria!</span>
-    </h2>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
 
-    <p class="hero__sub">🚀 NEW! Order Direct for 10% OFF first order! 👑</p>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900 border-t border-gray-800">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#menu" class="block px-3 py-2 text-gray-300 hover:text-yellow-500 hover:bg-gray-800 rounded-md transition-colors">Menu</a>
+                <a href="#get-in-touch" class="block px-3 py-2 text-gray-300 hover:text-yellow-500 hover:bg-gray-800 rounded-md transition-colors">Contact</a>
+            </div>
+        </div>
+    </nav>
 
-    <div class="hero__cta">
-      <button class="btn btn--ghost" onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})">
-        Order Direct
-      </button>
+    <!-- Hero Section -->
+    <section class="relative min-h-screen hero-bg flex items-center justify-center pt-20">
+        <!-- Social -->
+        <!-- Social icons removed -->
 
-      <a class="btn btn--ghost" href="https://www.mrd.com/delivery/restaurant/kingaways-trichardt/24007" target="_blank">
-        Order on Mr D
-      </a>
-    </div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h2 class="font-display text-5xl md:text-7xl font-bold mb-4 gold-gradient-text">
+                Taste the Royal Crunch
+            </h2>
+            <h2 class="font-display text-4xl md:text-6xl font-bold text-white mb-8">
+                in Pretoria!
+            </h2>
 
-    <a class="hero__link" href="#menu">View Full Menu</a>
-  </div>
+            <div class="flex items-center justify-center space-x-3 mb-10">
+                <span class="text-2xl sparkle">🚀</span>
+                <p class="text-xl md:text-2xl text-gray-200 font-medium">
+                    NEW! Order Direct for <span class="text-yellow-400 font-bold">10% OFF</span> first order! 
+                    <span class="text-2xl sparkle">👑</span>
+                </p>
+            </div>
 
-  <div class="hero__right">
-    <div class="social">
-      <a href="#" aria-label="Facebook">f</a>
-      <a href="#" aria-label="Instagram">◎</a>
-    </div>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+                <button class="btn-gold px-8 py-4 rounded-lg font-semibold text-lg min-w-[200px] flex items-center justify-center" onclick="window.open('https://www.mrd.com/delivery/restaurant/kingaways-trichardt/24007', '_blank')">
+                    <img src="download.png" alt="Mr D" style="height: 32px; width: auto; vertical-align: middle; margin-right: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    Order on Mr D
+                </button>
+            </div>
 
-    <aside class="cart-widget">
-      <div class="cart-widget__icon" aria-hidden="true">👜</div>
-      <div class="cart-widget__title">Your Royal Cart is<br/>Empty</div>
-      <a class="btn btn--outline" href="#cart-section">View Cart</a>
-    </aside>
-  </div>
+            <a href="#menu" class="text-gray-300 hover:text-yellow-400 font-medium text-lg underline underline-offset-4 transition-colors">
+                View Full Menu
+            </a>
+        </div>
 
-  <button class="floating-order" onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})">
-    Order Now
-  </button>
-</section>
+        <!-- Floating Cart Widget removed -->
 
-  <section class="delivery-options">
-    <h2 class="section-title">Order Your Way</h2>
-    <div class="delivery-grid">
-      <div class="delivery-card">
-        <h3>🍔 Order Direct</h3>
-        <p>Order directly from us for the best prices and fastest service!</p>
-        <button class="order-direct-btn" onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})">Start Order</button>
-      </div>
-      <div class="delivery-card mr-delivery-card">
-        <img src="https://mrdelivery.co.za/assets/images/logo.png" alt="Mr Delivery" class="delivery-logo">
-        <h3>Available on Mr Delivery</h3>
-        <p>Order through Mr Delivery for convenient payment and tracking!</p>
-        <button class="mr-delivery-order-btn" onclick="window.open('https://www.mrd.com/delivery/restaurant/kingaways-trichardt/24007', '_blank')">Order on Mr Delivery</button>
-      </div>
-    </div>
-  </section>
+        <!-- Floating Order Button Mobile -->
 
-  <section id="menu">
-    <h2 class="section-title">Our Menu</h2>
 
-    <!-- Specials -->
-    <div class="menu-category">
-      <h3 class="category-title">Specials</h3>
-      <div class="menu-grid">
-        <div class="menu-item" data-name="Fully Loaded Dagwood with Chips & Coke 440ml" data-price="99.95">
-          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Dagwood Special">
-          <h3>Fully Loaded Dagwood Special</h3>
-          <p>Ultimate Dagwood with chips and 440ml Coke.</p>
-          <button onclick="addToCart(this)">Add to Cart - R99.95</button>
-        </div>
-        <div class="menu-item" data-name="Cheese Burger with Chips & Coke 440ml" data-price="99.95">
-          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Cheese Burger Special">
-          <h3>Cheese Burger Special</h3>
-          <p>Juicy cheese burger with chips and Coke.</p>
-          <button onclick="addToCart(this)">Add to Cart - R99.95</button>
-        </div>
-        <div class="menu-item" data-name="Full Chicken with Large Chips, Large Salad & Coke 2L" data-price="199.95">
-          <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=600&q=80" alt="Full Chicken Special">
-          <h3>Full Chicken Special</h3>
-          <p>Full chicken, large chips, salad & 2L Coke.</p>
-          <button onclick="addToCart(this)">Add to Cart - R199.95</button>
-        </div>
-        <div class="menu-item" data-name="6 Fried Hot Wings, Chips & 440ml Coke" data-price="99.95">
-          <img src="https://images.unsplash.com/photo-1608039755401-742074f0548d?auto=format&fit=crop&w=600&q=80" alt="Hot Wings Special">
-          <h3>Hot Wings Special</h3>
-          <p>6 spicy wings with chips and Coke.</p>
-          <button onclick="addToCart(this)">Add to Cart - R99.95</button>
-        </div>
-      </div>
-    </div>
 
-    <!-- Burgers -->
-    <div class="menu-category">
-      <h3 class="category-title">Burgers</h3>
-      <div class="menu-grid">
-        <div class="menu-item" data-name="King Aways Burger" data-price="85">
-          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="King Aways Burger">
-          <h3>King Aways Burger</h3>
-          <p>200g burger with chips and special sauce.</p>
-          <button onclick="addToCart(this)">Add to Cart - R85</button>
-        </div>
-        <div class="menu-item" data-name="Deluxe Burger" data-price="85">
-          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Deluxe Burger">
-          <h3>Deluxe Burger</h3>
-          <p>Burger deluxe with chips and special sauce.</p>
-          <button onclick="addToCart(this)">Add to Cart - R85</button>
-        </div>
-        <div class="menu-item" data-name="Monster Burger" data-price="185">
-          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Monster Burger">
-          <h3>Monster Burger</h3>
-          <p>Monster burger with chips and special sauce.</p>
-          <button onclick="addToCart(this)">Add to Cart - R185</button>
-        </div>
-        <div class="menu-item" data-name="Boss Burger" data-price="115">
-          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=600&q=80" alt="Boss Burger">
-          <h3>Boss Burger</h3>
-          <p>Double beef (250g) with cheddar & 440ml Coke.</p>
-          <button onclick="addToCart(this)">Add to Cart - R115</button>
-        </div>
-      </div>
-    </div>
+    </section>
 
-    <!-- Chicken & Wings -->
-    <div class="menu-category">
-      <h3 class="category-title">Chicken & Wings</h3>
-      <div class="menu-grid">
-        <div class="menu-item" data-name="Full Chicken" data-price="145">
-          <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=600&q=80" alt="Full Chicken">
-          <h3>Full Chicken</h3>
-          <p>Perfectly roasted for sharing.</p>
-          <button onclick="addToCart(this)">Add to Cart - R145</button>
-        </div>
-        <div class="menu-item" data-name="Half Chicken" data-price="80">
-          <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=600&q=80" alt="Half Chicken">
-          <h3>Half Chicken</h3>
-          <p>Juicy and flavorful portion.</p>
-          <button onclick="addToCart(this)">Add to Cart - R80</button>
-        </div>
-        <div class="menu-item" data-name="6 x Buffalo Wings & Chips" data-price="95">
-          <img src="https://images.unsplash.com/photo-1608039755401-742074f0548d?auto=format&fit=crop&w=600&q=80" alt="Buffalo Wings">
-          <h3>6 x Buffalo Wings & Chips</h3>
-          <p>Fiery wings with golden chips.</p>
-          <button onclick="addToCart(this)">Add to Cart - R95</button>
-        </div>
-        <div class="menu-item" data-name="Grilled Chicken Strips & Chips" data-price="85">
-          <img src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=600&q=80" alt="Chicken Strips">
-          <h3>Grilled Chicken Strips & Chips</h3>
-          <p>Tender grilled chicken strips with chips.</p>
-          <button onclick="addToCart(this)">Add to Cart - R85</button>
-        </div>
-      </div>
-    </div>
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold gold-gradient-text mb-4">Our Menu</h2>
+            </div>
+            <div class="flex lg:flex-row gap-8">
+              <aside id="menu-sidebar" class="lg:w-64 lg:flex-shrink-0 hidden lg:block bg-gray-800/80 backdrop-blur-md rounded-xl p-6 sticky top-28 max-h-[calc(100vh-7rem)] overflow-y-auto border border-gray-700">
+                <h3 class="font-bold text-xl mb-6 gold-gradient-text">Food Categories</h3>
+                <nav id="category-nav" class="space-y-3"></nav>
+              </aside>
+              <main id="menu-content" class="flex-1 min-w-0">
+                <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+              </main>
+            </div>
 
-    <!-- Pizza -->
-    <div class="menu-category">
-      <h3 class="category-title">Classic Pizzas</h3>
-      <div class="menu-grid">
-        <div class="menu-item" data-name="Margarita Pizza" data-price="90">
-          <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80" alt="Margarita Pizza">
-          <h3>Margarita</h3>
-          <p>Classic tomato and mozzarella.</p>
-          <button onclick="addToCart(this)">Add to Cart - R90</button>
         </div>
-        <div class="menu-item" data-name="Hawaiian Pizza" data-price="105">
-          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?auto=format&fit=crop&w=600&q=80" alt="Hawaiian Pizza">
-          <h3>Hawaiian</h3>
-          <p>Ham and pineapple classic.</p>
-          <button onclick="addToCart(this)">Add to Cart - R105</button>
+    </section>
+
+    <!-- WhatsApp & Maps Section after Menu -->
+    <section id="get-in-touch" class="py-20 bg-gradient-to-r from-gray-900 to-gray-800">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="font-display text-4xl md:text-5xl font-bold gold-gradient-text mb-4">Get In Touch</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">Order now or find us on the map</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <!-- WhatsApp Button -->
+                <div class="flex flex-col items-center justify-center bg-gray-800/80 rounded-2xl p-8 shadow-lg">
+                    <a href="https://wa.me/27123456789?text=Hi%20King%20Aways,%20I'd%20like%20to%20place%20an%20order" class="w-full max-w-xs bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-2xl hover:shadow-gold transition-all duration-300 transform hover:-translate-y-1 text-lg text-center">
+                        Chat with us on WhatsApp
+                    </a>
+                    <p class="text-sm text-gray-400 mt-4">Instant Orders</p>
+                </div>
+                <!-- Google Maps -->
+                <div class="flex flex-col items-center justify-center bg-gray-800/80 rounded-2xl p-8 shadow-lg">
+                    <div class="w-full flex justify-center">
+                        <iframe src="https://www.google.com/maps?q=894+Ben+Swart+St,+Villieria,+Pretoria,+0186&output=embed" width="300" height="200" style="border:0; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-4">Find Us Here</p>
+                </div>
+            </div>
         </div>
-        <div class="menu-item" data-name="Chicken Mayo Pizza" data-price="110">
-          <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80" alt="Chicken Mayo Pizza">
-          <h3>Chicken Mayo</h3>
-          <p>Chicken with creamy mayo base.</p>
-          <button onclick="addToCart(this)">Add to Cart - R110</button>
+    </section>
+
+    <!-- Cart Section -->
+
+    <section id="cart-section" class="py-20 hidden">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 gold-gradient-text">Your Order</h2>
+            <aside id="cart-form" class="max-w-md mx-auto bg-gray-800 rounded-2xl p-8 border border-gray-700">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-900 border-2 border-yellow-500 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                    </div>
+                    <p id="cart-widget-title-cart" class="text-yellow-400 font-semibold">Your Royal Cart is Empty</p>
+                </div>
+                <div id="cart-items-form" class="space-y-4 mb-6" style="min-height: 100px;"></div>
+                <div id="total-cart" class="text-2xl font-bold text-yellow-400 mb-6 text-right hidden">Total: R0.00</div>
+                <div id="customer-form" style="display: none;">
+                    <input type="text" id="customer-name" placeholder="Full Name *" class="w-full p-3 mb-4 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500">
+                    <input type="tel" id="customer-phone" placeholder="Phone Number *" class="w-full p-3 mb-4 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500">
+                    <textarea id="customer-address" placeholder="Full Delivery Address *" class="w-full p-3 mb-4 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500 h-24"></textarea>
+                    <textarea id="order-notes" placeholder="Special Instructions (Optional)" class="w-full p-3 mb-4 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500 h-20"></textarea>
+                    <select id="payment-method" class="w-full p-3 mb-6 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500">
+                        <option value="cash">Cash on Delivery</option>
+                        <option value="card">Card on Delivery</option>
+                        <option value="eft">EFT</option>
+                    </select>
+                </div>
+                <button onclick="checkout()" class="w-full btn-solid-gold py-4 rounded-lg font-bold text-lg">Proceed to Order</button>
+            </aside>
         </div>
-        <div class="menu-item" data-name="Mexicana Pizza" data-price="110">
-          <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80" alt="Mexicana Pizza">
-          <h3>Mexicana</h3>
-          <p>Spicy Mexican-style pizza.</p>
-          <button onclick="addToCart(this)">Add to Cart - R110</button>
-        </div>
+    </section>
+
+    <!-- Cart Modal Popup -->
+    <div id="cart-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden">
+      <div class="relative bg-gray-900 rounded-2xl p-6 w-full max-w-md border border-yellow-500 shadow-2xl">
+        <button id="close-cart-modal" class="absolute top-3 right-3 text-gray-400 hover:text-yellow-400 text-2xl font-bold">&times;</button>
+        <h2 class="text-2xl font-bold text-center mb-6 gold-gradient-text">Your Order</h2>
+        <aside id="cart-form-modal" class="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-gray-900 border-2 border-yellow-500 flex items-center justify-center">
+                    <svg class="w-7 h-7 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                </div>
+                <p id="cart-widget-title-cart-modal" class="text-yellow-400 font-semibold">Your Royal Cart is Empty</p>
+            </div>
+            <div id="cart-items-form-modal" class="space-y-4 mb-4" style="min-height: 80px;"></div>
+            <div id="total-cart-modal" class="text-xl font-bold text-yellow-400 mb-4 text-right hidden">Total: R0.00</div>
+            <div id="customer-form-modal" style="display: none;">
+                <input type="text" id="customer-name-modal" placeholder="Full Name *" class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500">
+                <input type="tel" id="customer-phone-modal" placeholder="Phone Number *" class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500">
+                <textarea id="customer-address-modal" placeholder="Full Delivery Address *" class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500 h-20"></textarea>
+                <textarea id="order-notes-modal" placeholder="Special Instructions (Optional)" class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500 h-16"></textarea>
+                <select id="payment-method-modal" class="w-full p-3 mb-4 rounded-lg bg-gray-900 border border-gray-700 focus:border-yellow-500">
+                    <option value="cash">Cash on Delivery</option>
+                    <option value="card">Card on Delivery</option>
+                    <option value="eft">EFT</option>
+                </select>
+            </div>
+            <button onclick="checkoutModal()" class="w-full btn-solid-gold py-3 rounded-lg font-bold text-base">Proceed to Order</button>
+        </aside>
       </div>
     </div>
 
-    <!-- Sides & Drinks -->
-    <div class="menu-category">
-      <h3 class="category-title">Sides & Drinks</h3>
-      <div class="menu-grid">
-        <div class="menu-item" data-name="Chips" data-price="39">
-          <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=600&q=80" alt="Chips">
-          <h3>Chips</h3>
-          <p>Crispy golden chips.</p>
-          <button onclick="addToCart(this)">Add to Cart - R39</button>
-        </div>
-        <div class="menu-item" data-name="Coke" data-price="22">
-          <img src="https://images.unsplash.com/photo-1581636625402-29b2a704ef13?auto=format&fit=crop&w=600&q=80" alt="Coke">
-          <h3>Coke</h3>
-          <p>Refreshing Coca-Cola.</p>
-          <button onclick="addToCart(this)">Add to Cart - From R22</button>
-        </div>
-        <div class="menu-item" data-name="Fish & Chips" data-price="95">
-          <img src="https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=600&q=80" alt="Fish & Chips">
-          <h3>Fish & Chips</h3>
-          <p>300g hake fillet with chips and tartar sauce.</p>
-          <button onclick="addToCart(this)">Add to Cart - R95</button>
-        </div>
-        <div class="menu-item" data-name="Full Rack Pork Ribs" data-price="179">
-          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" alt="Pork Ribs">
-          <h3>Full Rack Pork Ribs</h3>
-          <p>Tender, juicy pork ribs.</p>
-          <button onclick="addToCart(this)">Add to Cart - R179</button>
-        </div>
-      </div>
-    </div>
-    <!-- Dynamic Menu from CSV -->
-    <div id="dynamic-menu" class="menu-category">
-      <h3 class="category-title">Full Menu</h3>
-      <div id="dynamic-menu-grid" class="menu-grid"></div>
-    </div>
-=======
-
-    <!-- Dynamic Menu from CSV -->
-    <div id="dynamic-menu" class="menu-category">
-      <h3 class="category-title">Full Menu</h3>
-      <div id="dynamic-menu-grid" class="menu-grid"></div>
-    </div>
->>>>>>> 93d01d7 (Redesign header and hero section with new topbar, logo fallback, hero--photo layout, cart-widget, and gold/dark theme styles)
-  </section>
-
-  <section id="cart-section">
-    <h2 class="section-title">Your Order</h2>
-    <div id="cart">
-      <h3>Cart</h3>
-      <div id="cart-items"></div>
-      <div id="total">Total: R0</div>
-      
-      <div id="customer-form" style="display: none;">
-        <h4>Delivery Details</h4>
-        <input type="text" id="customer-name" placeholder="Full Name" required>
-        <input type="tel" id="customer-phone" placeholder="Phone Number" required>
-        <textarea id="customer-address" placeholder="Full Delivery Address" required></textarea>
-        <textarea id="order-notes" placeholder="Special Instructions (Optional)"></textarea>
-        <select id="payment-method">
-          <option value="cash">Cash on Delivery</option>
-          <option value="card">Card on Delivery</option>
-          <option value="eft">EFT</option>
-        </select>
-      </div>
-      
-      <button onclick="checkout()" class="checkout-btn">Proceed to Order</button>
-    </div>
-  </section>
-
-  <section id="about">
-    <h2 class="section-title">About King Aways</h2>
-    <p class="about-text">
-      Located in Villieria, Pretoria, King Aways brings the royal taste of fast food to our community. We pride ourselves on fresh ingredients, quick service, and affordable prices. Order online for fast delivery!
-    </p>
-  </section>
-
-  <section id="contact">
-    <h2 class="section-title">Contact & Delivery</h2>
-    <div class="contact-grid">
-      <div class="contact-card">
-        <strong>📍 Location:</strong><br>
-        894 Ben Swart Street, Villieria, Pretoria, 0186
-      </div>
-      <div class="contact-card">
-        <strong>📱 WhatsApp Orders:</strong><br>
-        <a href="https://wa.me/27695530902" target="_blank">069 553 0902</a>
-      </div>
-      <div class="contact-card">
-        <strong>🚚 Delivery Area:</strong><br>
-        Pretoria and surrounding areas
-      </div>
-      <div class="contact-card">
-        <strong>⏰ Delivery Time:</strong><br>
-        30-45 minutes
-      </div>
-    </div>
-    
-    <div class="map-container">
-      <h3>Find Us</h3>
-      <iframe 
-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.693513473758!2d28.286997615262!3d-25.726758791569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956a4d3b5b2c7d%3A0x7b3e5b0a8a0b4d5c!2s894%20Ben%20Swart%20St%2C%20Villieria%2C%20Pretoria%2C%200186%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1720800000000!5m2!1sen!2sza"
-=======
-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.693513473758!2d28.286997615262!3d-25.726758791569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956a4d3b5b2c7d%3A0x7b3e5b0a8a0b4d5c!2s894%20Ben%20Swart%20St%2C%20Villieria%2C%20Pretoria%2C%200186%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1720800000000!5m2!1sen!2sza"
->>>>>>> 93d01d7 (Redesign header and hero section with new topbar, logo fallback, hero--photo layout, cart-widget, and gold/dark theme styles)
-        width="100%" 
-        height="300" 
-        style="border:0;border-radius:10px;" 
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
-    </div>
-  </section>
-
-  <footer>
-    <p>&copy; 2024 King Aways | Follow us: 
-      <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="https://wa.me/27695530902" target="_blank">WhatsApp</a>
-    </p>
-  </footer>
-
-  <!-- Floating Cart -->
-  <div id="floating-cart" class="floating-cart">
-    <div class="cart-header" onclick="toggleCart()">
-      <span>🛒 Cart (<span id="cart-count">0</span>)</span>
-      <span id="cart-toggle">▼</span>
-    </div>
-    <div id="floating-cart-items" class="cart-content">
-      <div id="mini-cart-items"></div>
-      <div id="mini-total">Total: R0</div>
-      <button onclick="document.getElementById('cart-section').scrollIntoView({behavior:'smooth'})" class="view-cart-btn">View Full Cart</button>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>

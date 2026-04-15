@@ -1,224 +1,299 @@
+
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
+function renderCart() {
+  const cartItemsForm = document.getElementById('cart-items-form');
+  if (!cartItemsForm) return;
+  cartItemsForm.innerHTML = '';
+  let total = 0;
+  const widgetTitle = document.getElementById('cart-widget-title');
+  const widgetTitleCart = document.getElementById('cart-widget-title-cart');
+  const customerForm = document.getElementById('customer-form');
+  const totalEl = document.getElementById('total-cart');
+  if (cart.length === 0) {
+    totalEl.textContent = 'Total: R0.00';
+    customerForm.style.display = 'none';
+    if (widgetTitle) widgetTitle.innerHTML = 'Your Royal Cart is<br/>Empty';
+    if (widgetTitleCart) widgetTitleCart.textContent = 'Your Royal Cart is Empty';
+    localStorage.setItem('cart', '[]');
+    return;
+  }
+  cart.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'flex justify-between py-2 border-b border-gray-700 last:border-b-0 text-sm';
+    div.innerHTML = `<span>${item.name} (x${item.qty})</span><span class="font-bold text-yellow-400">R${(item.price * item.qty).toFixed(2)}</span>`;
+    cartItemsForm.appendChild(div);
+    total += item.price * item.qty;
+  });
+  totalEl.textContent = `Total: R${total.toFixed(2)}`;
+  customerForm.style.display = 'block';
+  const itemCount = cart.reduce((sum, i) => sum + i.qty, 0);
+  if (widgetTitle) widgetTitle.innerHTML = `Cart<br/>${itemCount} items`;
+  if (widgetTitleCart) widgetTitleCart.textContent = `Cart: ${itemCount} items`;
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function checkout() {
+  if (cart.length === 0) {
+    showToast('Cart is empty!');
+    return;
+  }
+  const name = document.getElementById('customer-name').value.trim();
+  const phone = document.getElementById('customer-phone').value.trim();
+  const address = document.getElementById('customer-address').value.trim();
+  if (!name || !phone || !address) {
+    showToast('Please fill in name, phone and address');
+    return;
+  }
+  const notes = document.getElementById('order-notes').value;
+  const payment = document.getElementById('payment-method').value;
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const order = {
+    customer: { name, phone, address, notes, payment },
+    items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+    total: total.toFixed(2)
+  };
+  console.log('New Order:', order);
+  alert(`Order placed!\nName: ${name}\nPhone: ${phone}\nTotal: R${total.toFixed(2)}\nCheck console for details.\nWe will call you shortly.`);
+  cart = [];
+  renderCart();
+}
+
+// --- MENU LOADING ---
+async function loadMenuAndCategories() {
+  try {
+    const response = await fetch('menu.csv');
+    console.log('Fetch menu.csv:', response.ok ? 'OK' : `Failed ${response.status}`, 'Size:', response.headers.get('content-length'));
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const csvText = await response.text();
+    console.log('CSV preview:', csvText.substring(0, 300));
+    console.log('Data lines:', csvText.trim().split('\n').slice(1).length);
+    const lines = csvText.trim().split('\n').slice(1);
+    const menuMap = new Map();
+
+    // Proper CSV parser for quoted fields/commas
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim().replace(/^"|"$/g, ''));
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim().replace(/^"|"$/g, ''));
+      return result;
+    }
+
+    lines.forEach((line, index) => {
+      const fields = parseCSVLine(line);
+      if (index < 3) console.log(`Line ${index}:`, JSON.stringify(fields));
+      if (fields.length >= 4) {
+        const category = fields[0];
+        const item = fields[1];
+        const desc = fields[2];
+        const priceStr = fields[3];
+        const price = parseFloat(priceStr);
+        if (!category || !item || isNaN(price)) {
+          console.warn('Skipped line:', {category, item, priceStr, price, fields: fields.slice(0,4)});
+          return;
+        }
+        if (!menuMap.has(category)) menuMap.set(category, []);
+        menuMap.get(category).push({item, description: desc, price});
+      }
+    });
+
+
+    const totalItems = Array.from(menuMap.values()).reduce((acc, items) => acc + items.length, 0);
+    console.log('Final menuMap:', Array.from(menuMap.keys()).length, 'categories,', totalItems, 'items');
+
+    // Render sidebar categories
+    const categoryNav = document.getElementById('category-nav');
+    if (categoryNav) {
+      categoryNav.innerHTML = '';
+      Array.from(menuMap.keys()).forEach(category => {
+        const btn = document.createElement('button');
+        btn.className = 'block w-full text-left px-4 py-2 rounded-lg hover:bg-yellow-500/10 hover:text-yellow-400 font-semibold transition-colors category-link';
+        btn.textContent = category;
+        btn.onclick = () => {
+          const el = document.getElementById('cat-' + category.replace(/\s+/g, '-'));
+          if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
+        };
+        categoryNav.appendChild(btn);
+      });
+    }
+
+    // Render menu items as cards in grid
+    const grid = document.getElementById('menu-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    menuMap.forEach((items, category) => {
+      // Category header
+      const catHeader = document.createElement('h3');
+      catHeader.className = 'col-span-full text-2xl font-bold gold-gradient-text mb-4 pt-8';
+      catHeader.textContent = category;
+      catHeader.id = 'cat-' + category.replace(/\s+/g, '-');
+      grid.appendChild(catHeader);
+      // Cards
+      items.forEach(({item, description, price}) => {
+        const div = document.createElement('div');
+        div.className = 'menu-item bg-gray-800 rounded-xl p-6 hover:border-yellow-500 border border-gray-700 hover:scale-105 transition-all duration-300 group flex flex-col';
+        div.dataset.name = item;
+        div.dataset.price = price;
+        div.innerHTML = `
+          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=400&q=80" alt="${item}" class="w-full h-36 object-cover rounded-lg mb-4 group-hover:scale-105 transition-transform">
+          <h4 class="font-bold text-lg mb-1">${item}</h4>
+          <p class="text-gray-400 mb-3 text-sm flex-1">${description}</p>
+          <button onclick="addToCart(this)" class="w-full btn-gold py-2 rounded-lg font-semibold text-sm mt-auto">Add to Cart - R${price.toFixed(2)}</button>
+        `;
+        grid.appendChild(div);
+      });
+    });
+  } catch (err) {
+    console.error(err);
+    const grid = document.getElementById('menu-grid');
+    if (grid) grid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-20">Menu loading... (Check menu.csv)</p>';
+  }
+}
+
+// --- END MENU LOADING ---
+
 function addToCart(button) {
-  const item = button.closest('.menu-item');
+  const item = button.closest('.menu-item') || button.closest('[data-name]');
   const name = item.dataset.name;
   const price = parseFloat(item.dataset.price);
   const existing = cart.find(i => i.name === name);
-  
   if (existing) {
     existing.qty += 1;
   } else {
     cart.push({name, price, qty: 1});
   }
-  
   renderCart();
-  
-  // Visual feedback
-  button.style.background = '#28a745';
-  button.textContent = 'Added!';
-  setTimeout(() => {
-    button.style.background = '#E41C23';
-    button.textContent = `Add to Cart - R${price}`;
-  }, 1000);
+  showToast('Added to cart!');
 }
 
-function removeFromCart(name) {
-  cart = cart.filter(i => i.name !== name);
-  renderCart();
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  if (toast) {
+    toast.querySelector('#toast-message').textContent = message;
+    toast.classList.remove('opacity-0', 'translate-y-4');
+    setTimeout(() => toast.classList.add('opacity-0', 'translate-y-4'), 3000);
+  } else {
+    alert(message);
+  }
 }
 
-function renderCart() {
-  const cartItems = document.getElementById('cart-items');
-  const customerForm = document.getElementById('customer-form');
-  const miniCartItems = document.getElementById('mini-cart-items');
-  const floatingCart = document.getElementById('floating-cart');
-  
-  cartItems.innerHTML = '';
-  miniCartItems.innerHTML = '';
+function renderCartModal() {
+  const cartItemsForm = document.getElementById('cart-items-form-modal');
+  if (!cartItemsForm) return;
+  cartItemsForm.innerHTML = '';
   let total = 0;
-  
-  cart.forEach(item => {
-    total += item.price * item.qty;
-    
-    // Main cart item
-    const div = document.createElement('div');
-    div.classList.add('cart-item');
-    div.innerHTML = `
-      <div class="cart-item-info">
-        <span class="item-name">${item.name}</span>
-        <span class="item-qty">Qty: ${item.qty}</span>
-      </div>
-      <div class="cart-item-controls">
-        <span class="item-price">R${(item.price * item.qty).toFixed(2)}</span>
-        <div class="qty-controls">
-          <button onclick="updateQty('${item.name}', -1)">-</button>
-          <button onclick="updateQty('${item.name}', 1)">+</button>
-          <button onclick="removeFromCart('${item.name}')">Remove</button>
-        </div>
-      </div>
-    `;
-    cartItems.appendChild(div);
-    
-    // Mini cart item
-    const miniDiv = document.createElement('div');
-    miniDiv.classList.add('mini-cart-item');
-    miniDiv.innerHTML = `
-      <span>${item.name} x ${item.qty}</span>
-      <span>R${(item.price * item.qty).toFixed(2)}</span>
-    `;
-    miniCartItems.appendChild(miniDiv);
-  });
-  
-  document.getElementById('total').innerText = `Total: R${total.toFixed(2)}`;
-  document.getElementById('mini-total').innerText = `Total: R${total.toFixed(2)}`;
-  document.getElementById('cart-count').innerText = cart.length;
-  
-  customerForm.style.display = cart.length > 0 ? 'block' : 'none';
-  
-  // Always show floating cart
-  floatingCart.style.display = 'block';
-  
-  // Update cart header text
-  const cartHeader = floatingCart.querySelector('.cart-header span');
+  const widgetTitle = document.getElementById('cart-widget-title-cart-modal');
+  const customerForm = document.getElementById('customer-form-modal');
+  const totalEl = document.getElementById('total-cart-modal');
+
   if (cart.length === 0) {
-    cartHeader.innerHTML = '🛒 Cart (Empty)';
-    document.getElementById('floating-cart-items').innerHTML = '<p style="text-align:center;color:#666;padding:1rem;">Your cart is empty</p>';
+    totalEl.textContent = 'Total: R0.00';
+    totalEl.classList.add('hidden');
+    customerForm.style.display = 'none';
+    if (widgetTitle) widgetTitle.textContent = 'Your Royal Cart is Empty';
+    localStorage.setItem('cart', '[]');
+    return;
+  }
+
+  cart.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'flex justify-between py-2 border-b border-gray-700 last:border-b-0 text-sm';
+    div.innerHTML = `<span>${item.name} (x${item.qty})</span><span class="font-bold text-yellow-400">R${(item.price * item.qty).toFixed(2)}</span>`;
+    cartItemsForm.appendChild(div);
+    total += item.price * item.qty;
+  });
+
+  totalEl.textContent = `Total: R${total.toFixed(2)}`;
+  totalEl.classList.remove('hidden');
+  customerForm.style.display = 'block';
+  if (widgetTitle) widgetTitle.textContent = `Cart: ${cart.reduce((sum, i) => sum + i.qty, 0)} items`;
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function syncCartNavCount() {
+  const count = cart.reduce((sum, i) => sum + i.qty, 0);
+  const badge = document.getElementById('cart-nav-count');
+  if (!badge) return;
+
+  if (count > 0) {
+    badge.textContent = count;
+    badge.classList.remove('hidden');
   } else {
-    cartHeader.innerHTML = `🛒 Cart (<span id="cart-count">${cart.length}</span>)`;
+    badge.classList.add('hidden');
   }
 }
 
-function updateQty(name, change) {
-  const item = cart.find(i => i.name === name);
-  if (item) {
-    // Load and render dynamic menu from menu.csv
-    async function loadDynamicMenu() {
-      try {
-        const response = await fetch('menu.csv');
-        const csvText = await response.text();
-        const lines = csvText.trim().split('\n').slice(1); // Skip header
-        const menuMap = new Map();
-
-        lines.forEach(line => {
-          const [category, item, description, priceStr] = line.split(',');
-          const price = parseFloat(priceStr);
-          if (!menuMap.has(category)) menuMap.set(category, []);
-          menuMap.get(category).push({item, description, price});
-        });
-
-        const grid = document.getElementById('dynamic-menu-grid');
-        menuMap.forEach((items, category) => {
-          const catDiv = document.createElement('div');
-          catDiv.className = 'menu-subcategory';
-          catDiv.innerHTML = `<h4 class="subcategory-title">${category}</h4>`;
-          const subGrid = document.createElement('div');
-          subGrid.className = 'menu-grid';
-          items.slice(0,8).forEach(({item, description, price}) => { // Limit 8 per cat
-            const div = document.createElement('div');
-            div.className = 'menu-item';
-            div.dataset.name = item;
-            div.dataset.price = price;
-            div.innerHTML = `
-              <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?auto=format&fit=crop&w=600&q=80" alt="${item}" style="filter: brightness(1.1);">
-              <h3>${item}</h3>
-              <p>${description}</p>
-              <button onclick="addToCart(this)">Add to Cart - R${price.toFixed(2)}</button>
-            `;
-            subGrid.appendChild(div);
-          });
-          catDiv.appendChild(subGrid);
-          grid.appendChild(catDiv);
-        });
-      } catch (err) {
-        console.error('Failed to load menu.csv:', err);
-        document.getElementById('dynamic-menu').innerHTML += '<p style="text-align:center;color:#ccc;">Full menu loading...</p>';
-      }
-    }
-
-    // Initialize cart on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      renderCart();
-      loadDynamicMenu();
-    });
-
-// Smooth scroll function
-function scrollToMenu() {
-  const menuElement = document.getElementById('menu');
-  if (menuElement) {
-    menuElement.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }
+function openCartModal() {
+  document.getElementById('cart-modal')?.classList.remove('hidden');
+  renderCartModal();
 }
 
-function toggleCart() {
-  const cartContent = document.getElementById('floating-cart-items');
-  const toggle = document.getElementById('cart-toggle');
-  
-  if (cartContent.style.display === 'none') {
-    cartContent.style.display = 'block';
-    toggle.textContent = '▼';
-  } else {
-    cartContent.style.display = 'none';
-    toggle.textContent = '▶';
-  }
+function closeCartModal() {
+  document.getElementById('cart-modal')?.classList.add('hidden');
 }
 
-<<<<<<< HEAD
-// Initialize cart on page load
+function checkoutModal() {
+  if (cart.length === 0) {
+    showToast('Cart is empty!');
+    return;
+  }
+
+  const name = document.getElementById('customer-name-modal').value.trim();
+  const phone = document.getElementById('customer-phone-modal').value.trim();
+  const address = document.getElementById('customer-address-modal').value.trim();
+
+  if (!name || !phone || !address) {
+    showToast('Please fill in name, phone and address');
+    return;
+  }
+
+  const notes = document.getElementById('order-notes-modal').value;
+  const payment = document.getElementById('payment-method-modal').value;
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const order = {
+    customer: { name, phone, address, notes, payment },
+    items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+    total: total.toFixed(2)
+  };
+
+  console.log('New Order:', order);
+  alert(`Order placed!\nName: ${name}\nPhone: ${phone}\nTotal: R${total.toFixed(2)}\nCheck console for details.\nWe will call you shortly.`);
+  cart = [];
+  renderCart();
+  renderCartModal();
+  syncCartNavCount();
+  closeCartModal();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
+  renderCartModal();
+  syncCartNavCount();
+  loadMenuAndCategories();
+
+  const cartBtn = document.getElementById('cart-nav-btn');
+  if (cartBtn) cartBtn.addEventListener('click', openCartModal);
+
+  const closeBtn = document.getElementById('close-cart-modal');
+  if (closeBtn) closeBtn.addEventListener('click', closeCartModal);
+
+  document.getElementById('cart-modal')?.addEventListener('click', function (e) {
+    if (e.target === this) closeCartModal();
+  });
 });
-=======
-// Load and render dynamic menu from menu.csv
-async function loadDynamicMenu() {
-  try {
-    const response = await fetch('menu.csv');
-    const csvText = await response.text();
-    const lines = csvText.trim().split('\n').slice(1); // Skip header
-    const menuMap = new Map();
 
-    lines.forEach(line => {
-      const [category, item, description, priceStr] = line.split(',');
-      const price = parseFloat(priceStr);
-      if (!menuMap.has(category)) menuMap.set(category, []);
-      menuMap.get(category).push({item, description, price});
-    });
-
-    const grid = document.getElementById('dynamic-menu-grid');
-    menuMap.forEach((items, category) => {
-      const catDiv = document.createElement('div');
-      catDiv.className = 'menu-subcategory';
-      catDiv.innerHTML = `<h4 class="subcategory-title">${category}</h4>`;
-      const subGrid = document.createElement('div');
-      subGrid.className = 'menu-grid';
-      items.slice(0,8).forEach(({item, description, price}) => { // Limit 8 per cat
-        const div = document.createElement('div');
-        div.className = 'menu-item';
-        div.dataset.name = item;
-        div.dataset.price = price;
-        div.innerHTML = `
-          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?auto=format&fit=crop&w=600&q=80" alt="${item}" style="filter: brightness(1.1);">
-          <h3>${item}</h3>
-          <p>${description}</p>
-          <button onclick="addToCart(this)">Add to Cart - R${price.toFixed(2)}</button>
-        `;
-        subGrid.appendChild(div);
-      });
-      catDiv.appendChild(subGrid);
-      grid.appendChild(catDiv);
-    });
-  } catch (err) {
-    console.error('Failed to load menu.csv:', err);
-    document.getElementById('dynamic-menu').innerHTML += '<p style="text-align:center;color:#ccc;">Full menu loading...</p>';
-  }
-}
-
-// Initialize cart on page load
-document.addEventListener('DOMContentLoaded', () => {
-  renderCart();
-  loadDynamicMenu();
+document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
 });
->>>>>>> 93d01d7 (Redesign header and hero section with new topbar, logo fallback, hero--photo layout, cart-widget, and gold/dark theme styles)
