@@ -121,51 +121,76 @@ async function loadMenuAndCategories() {
     });
 
 
+    const categories = Array.from(menuMap.keys());
     const totalItems = Array.from(menuMap.values()).reduce((acc, items) => acc + items.length, 0);
-    console.log('Final menuMap:', Array.from(menuMap.keys()).length, 'categories,', totalItems, 'items');
+    console.log('Final menuMap:', categories.length, 'categories,', totalItems, 'items');
 
-    // Render sidebar categories
+    const grid = document.getElementById('menu-grid');
     const categoryNav = document.getElementById('category-nav');
+    const mobileCategorySelect = document.getElementById('mobile-category-select');
+    if (!grid) return;
+
+    function renderMenuGrid(selectedCategory = null) {
+      grid.innerHTML = '';
+      const entries = selectedCategory
+        ? [[selectedCategory, menuMap.get(selectedCategory) || []]]
+        : Array.from(menuMap.entries());
+
+      entries.forEach(([category, items]) => {
+        const catHeader = document.createElement('h3');
+        catHeader.className = 'col-span-full text-2xl font-bold gold-gradient-text mb-4 pt-2 lg:pt-8';
+        catHeader.textContent = category;
+        catHeader.id = 'cat-' + category.replace(/\s+/g, '-');
+        grid.appendChild(catHeader);
+
+        items.forEach(({ item, description, price }) => {
+          const div = document.createElement('div');
+          div.className = 'menu-item bg-gray-800 rounded-xl p-6 hover:border-yellow-500 border border-gray-700 hover:scale-105 transition-all duration-300 group flex flex-col';
+          div.dataset.name = item;
+          div.dataset.price = price;
+          div.innerHTML = `
+            <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=400&q=80" alt="${item}" class="w-full h-36 object-cover rounded-lg mb-4 group-hover:scale-105 transition-transform">
+            <h4 class="font-bold text-lg mb-1">${item}</h4>
+            <p class="text-gray-400 mb-3 text-sm flex-1">${description}</p>
+            <button onclick="addToCart(this)" class="w-full btn-gold py-2 rounded-lg font-semibold text-sm mt-auto">Add to Cart - R${price.toFixed(2)}</button>
+          `;
+          grid.appendChild(div);
+        });
+      });
+    }
+
     if (categoryNav) {
       categoryNav.innerHTML = '';
-      Array.from(menuMap.keys()).forEach(category => {
+      categories.forEach(category => {
         const btn = document.createElement('button');
         btn.className = 'block w-full text-left px-4 py-2 rounded-lg hover:bg-yellow-500/10 hover:text-yellow-400 font-semibold transition-colors category-link';
         btn.textContent = category;
-        btn.onclick = () => {
-          const el = document.getElementById('cat-' + category.replace(/\s+/g, '-'));
-          if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
-        };
+        btn.onclick = () => renderMenuGrid(category);
         categoryNav.appendChild(btn);
       });
     }
 
-    // Render menu items as cards in grid
-    const grid = document.getElementById('menu-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
-    menuMap.forEach((items, category) => {
-      // Category header
-      const catHeader = document.createElement('h3');
-      catHeader.className = 'col-span-full text-2xl font-bold gold-gradient-text mb-4 pt-8';
-      catHeader.textContent = category;
-      catHeader.id = 'cat-' + category.replace(/\s+/g, '-');
-      grid.appendChild(catHeader);
-      // Cards
-      items.forEach(({item, description, price}) => {
-        const div = document.createElement('div');
-        div.className = 'menu-item bg-gray-800 rounded-xl p-6 hover:border-yellow-500 border border-gray-700 hover:scale-105 transition-all duration-300 group flex flex-col';
-        div.dataset.name = item;
-        div.dataset.price = price;
-        div.innerHTML = `
-          <img src="https://images.unsplash.com/photo-1600891964601-f61ba0e24093?auto=format&fit=crop&w=400&q=80" alt="${item}" class="w-full h-36 object-cover rounded-lg mb-4 group-hover:scale-105 transition-transform">
-          <h4 class="font-bold text-lg mb-1">${item}</h4>
-          <p class="text-gray-400 mb-3 text-sm flex-1">${description}</p>
-          <button onclick="addToCart(this)" class="w-full btn-gold py-2 rounded-lg font-semibold text-sm mt-auto">Add to Cart - R${price.toFixed(2)}</button>
-        `;
-        grid.appendChild(div);
+    if (mobileCategorySelect) {
+      mobileCategorySelect.innerHTML = categories
+        .map(category => `<option value="${category}">${category}</option>`)
+        .join('');
+
+      mobileCategorySelect.addEventListener('change', () => {
+        renderMenuGrid(mobileCategorySelect.value);
       });
-    });
+    }
+
+    const renderForScreenSize = () => {
+      if (window.innerWidth < 1024) {
+        const firstCategory = mobileCategorySelect?.value || categories[0];
+        renderMenuGrid(firstCategory);
+      } else {
+        renderMenuGrid();
+      }
+    };
+
+    renderForScreenSize();
+    window.addEventListener('resize', renderForScreenSize);
   } catch (err) {
     console.error(err);
     const grid = document.getElementById('menu-grid');
