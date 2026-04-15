@@ -127,8 +127,10 @@ async function loadMenuAndCategories() {
 
     const grid = document.getElementById('menu-grid');
     const categoryNav = document.getElementById('category-nav');
-    const mobileCategorySelect = document.getElementById('mobile-category-select');
+    const mobileCategoryNav = document.getElementById('mobile-category-nav');
     if (!grid) return;
+
+    let activeMobileCategory = categories[0] || null;
 
     function renderMenuGrid(selectedCategory = null) {
       grid.innerHTML = '';
@@ -159,31 +161,50 @@ async function loadMenuAndCategories() {
       });
     }
 
+    function updateMobileCategoryButtons() {
+      if (!mobileCategoryNav) return;
+      mobileCategoryNav.innerHTML = '';
+
+      categories.forEach(category => {
+        const btn = document.createElement('button');
+        const isActive = category === activeMobileCategory;
+        btn.className = isActive
+          ? 'whitespace-nowrap px-4 py-2 rounded-full bg-yellow-500 text-gray-900 font-semibold text-sm'
+          : 'whitespace-nowrap px-4 py-2 rounded-full bg-gray-800 border border-gray-700 text-gray-200 font-semibold text-sm';
+        btn.textContent = category;
+        btn.onclick = () => {
+          activeMobileCategory = category;
+          updateMobileCategoryButtons();
+          renderMenuGrid(category);
+        };
+        mobileCategoryNav.appendChild(btn);
+      });
+    }
+
     if (categoryNav) {
       categoryNav.innerHTML = '';
       categories.forEach(category => {
         const btn = document.createElement('button');
         btn.className = 'block w-full text-left px-4 py-2 rounded-lg hover:bg-yellow-500/10 hover:text-yellow-400 font-semibold transition-colors category-link';
         btn.textContent = category;
-        btn.onclick = () => renderMenuGrid(category);
+        btn.onclick = () => {
+          const el = document.getElementById('cat-' + category.replace(/\s+/g, '-'));
+          if (window.innerWidth < 1024) {
+            activeMobileCategory = category;
+            updateMobileCategoryButtons();
+            renderMenuGrid(category);
+          } else if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        };
         categoryNav.appendChild(btn);
-      });
-    }
-
-    if (mobileCategorySelect) {
-      mobileCategorySelect.innerHTML = categories
-        .map(category => `<option value="${category}">${category}</option>`)
-        .join('');
-
-      mobileCategorySelect.addEventListener('change', () => {
-        renderMenuGrid(mobileCategorySelect.value);
       });
     }
 
     const renderForScreenSize = () => {
       if (window.innerWidth < 1024) {
-        const firstCategory = mobileCategorySelect?.value || categories[0];
-        renderMenuGrid(firstCategory);
+        updateMobileCategoryButtons();
+        renderMenuGrid(activeMobileCategory);
       } else {
         renderMenuGrid();
       }
