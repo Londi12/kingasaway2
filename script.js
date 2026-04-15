@@ -45,18 +45,10 @@ function checkout() {
     showToast('Please fill in name, phone and address');
     return;
   }
-  const notes = document.getElementById('order-notes').value;
-  const payment = document.getElementById('payment-method').value;
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const order = {
-    customer: { name, phone, address, notes, payment },
-    items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
-    total: total.toFixed(2)
-  };
-  console.log('New Order:', order);
-  alert(`Order placed!\nName: ${name}\nPhone: ${phone}\nTotal: R${total.toFixed(2)}\nCheck console for details.\nWe will call you shortly.`);
+
   cart = [];
   renderCart();
+  showToast('Order placed successfully. We will contact you shortly.');
 }
 
 // --- MENU LOADING ---
@@ -67,18 +59,13 @@ async function loadMenuAndCategories() {
 
     try {
       const response = await fetch('menu.csv');
-      console.log('Fetch menu.csv:', response.ok ? 'OK' : `Failed ${response.status}`, 'Size:', response.headers.get('content-length'));
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       csvText = await response.text();
     } catch (fetchError) {
-      console.warn('Using embedded menu fallback:', fetchError.message);
       csvText = embeddedCsv;
     }
 
     if (!csvText) throw new Error('No menu data available');
-
-    console.log('CSV preview:', csvText.substring(0, 300));
-    console.log('Data lines:', csvText.trim().split(/\r?\n/).slice(1).length);
     const lines = csvText.trim().split(/\r?\n/).slice(1);
     const menuMap = new Map();
 
@@ -104,7 +91,6 @@ async function loadMenuAndCategories() {
 
     lines.forEach((line, index) => {
       const fields = parseCSVLine(line);
-      if (index < 3) console.log(`Line ${index}:`, JSON.stringify(fields));
       if (fields.length >= 4) {
         const category = fields[0];
         const item = fields[1];
@@ -112,7 +98,6 @@ async function loadMenuAndCategories() {
         const priceStr = fields[3];
         const price = parseFloat(priceStr);
         if (!category || !item || isNaN(price)) {
-          console.warn('Skipped line:', {category, item, priceStr, price, fields: fields.slice(0,4)});
           return;
         }
         if (!menuMap.has(category)) menuMap.set(category, []);
@@ -122,8 +107,6 @@ async function loadMenuAndCategories() {
 
 
     const categories = Array.from(menuMap.keys());
-    const totalItems = Array.from(menuMap.values()).reduce((acc, items) => acc + items.length, 0);
-    console.log('Final menuMap:', categories.length, 'categories,', totalItems, 'items');
 
     const grid = document.getElementById('menu-grid');
     const categoryNav = document.getElementById('category-nav');
@@ -239,13 +222,16 @@ function addToCart(button) {
 
 function showToast(message) {
   const toast = document.getElementById('toast');
-  if (toast) {
-    toast.querySelector('#toast-message').textContent = message;
-    toast.classList.remove('opacity-0', 'translate-y-4');
-    setTimeout(() => toast.classList.add('opacity-0', 'translate-y-4'), 3000);
-  } else {
-    alert(message);
-  }
+  const toastMessage = document.getElementById('toast-message');
+  if (!toast || !toastMessage) return;
+
+  toastMessage.textContent = message;
+  toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+
+  clearTimeout(window.toastTimeout);
+  window.toastTimeout = setTimeout(() => {
+    toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+  }, 3200);
 }
 
 function renderCartModal() {
@@ -318,22 +304,12 @@ function checkoutModal() {
     return;
   }
 
-  const notes = document.getElementById('order-notes-modal').value;
-  const payment = document.getElementById('payment-method-modal').value;
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const order = {
-    customer: { name, phone, address, notes, payment },
-    items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
-    total: total.toFixed(2)
-  };
-
-  console.log('New Order:', order);
-  alert(`Order placed!\nName: ${name}\nPhone: ${phone}\nTotal: R${total.toFixed(2)}\nCheck console for details.\nWe will call you shortly.`);
   cart = [];
   renderCart();
   renderCartModal();
   syncCartNavCount();
   closeCartModal();
+  showToast('Order placed successfully. We will contact you shortly.');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
