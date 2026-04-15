@@ -52,16 +52,16 @@ function checkout() {
   }
 
   // Gather order details
-  let orderDetails = cart.map(item => `${item.name} (x${item.qty}) - R${(item.price * item.qty).toFixed(2)}`).join('%0A');
+  let orderDetails = cart.map(item => `- ${item.name} (x${item.qty}) - R${(item.price * item.qty).toFixed(2)}`).join('\n');
   let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const notes = document.getElementById('order-notes')?.value.trim() || '';
   const payment = document.getElementById('payment-method')?.value || '';
-  let message = `*New Order*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${address}%0A`;
-  if (notes) message += `*Notes:* ${notes}%0A`;
-  message += `%0A*Order:*%0A${orderDetails}%0A%0A*Total:* R${total.toFixed(2)}%0A*Payment:* ${payment}`;
+  let message = `*New Order*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}`;
+  if (notes) message += `\n*Notes:* ${notes}`;
+  message += `\n\n*Order:*\n${orderDetails}\n\n*Total:* R${total.toFixed(2)}\n*Payment:* ${payment}`;
   // WhatsApp South Africa: 0695530902 (country code 27, drop leading 0)
   const waNumber = '27695530902';
-  const waUrl = `https://wa.me/${waNumber}?text=${encodeURI(message)}`;
+  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
   window.open(waUrl, '_blank');
   cart = [];
   renderCart();
@@ -333,16 +333,16 @@ function checkoutModal() {
   }
 
   // Gather order details
-  let orderDetails = cart.map(item => `${item.name} (x${item.qty}) - R${(item.price * item.qty).toFixed(2)}`).join('%0A');
+  let orderDetails = cart.map(item => `- ${item.name} (x${item.qty}) - R${(item.price * item.qty).toFixed(2)}`).join('\n');
   let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const notes = document.getElementById('order-notes-modal')?.value.trim() || '';
   const payment = document.getElementById('payment-method-modal')?.value || '';
-  let message = `*New Order*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${address}%0A`;
-  if (notes) message += `*Notes:* ${notes}%0A`;
-  message += `%0A*Order:*%0A${orderDetails}%0A%0A*Total:* R${total.toFixed(2)}%0A*Payment:* ${payment}`;
+  let message = `*New Order*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}`;
+  if (notes) message += `\n*Notes:* ${notes}`;
+  message += `\n\n*Order:*\n${orderDetails}\n\n*Total:* R${total.toFixed(2)}\n*Payment:* ${payment}`;
   // WhatsApp South Africa: 0695530902 (country code 27, drop leading 0)
   const waNumber = '27695530902';
-  const waUrl = `https://wa.me/${waNumber}?text=${encodeURI(message)}`;
+  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
   window.open(waUrl, '_blank');
   cart = [];
   renderCart();
