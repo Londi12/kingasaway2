@@ -62,13 +62,24 @@ function checkout() {
 // --- MENU LOADING ---
 async function loadMenuAndCategories() {
   try {
-    const response = await fetch('menu.csv');
-    console.log('Fetch menu.csv:', response.ok ? 'OK' : `Failed ${response.status}`, 'Size:', response.headers.get('content-length'));
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const csvText = await response.text();
+    const embeddedCsv = document.getElementById('embedded-menu-data')?.textContent?.trim() || '';
+    let csvText = '';
+
+    try {
+      const response = await fetch('menu.csv');
+      console.log('Fetch menu.csv:', response.ok ? 'OK' : `Failed ${response.status}`, 'Size:', response.headers.get('content-length'));
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      csvText = await response.text();
+    } catch (fetchError) {
+      console.warn('Using embedded menu fallback:', fetchError.message);
+      csvText = embeddedCsv;
+    }
+
+    if (!csvText) throw new Error('No menu data available');
+
     console.log('CSV preview:', csvText.substring(0, 300));
-    console.log('Data lines:', csvText.trim().split('\n').slice(1).length);
-    const lines = csvText.trim().split('\n').slice(1);
+    console.log('Data lines:', csvText.trim().split(/\r?\n/).slice(1).length);
+    const lines = csvText.trim().split(/\r?\n/).slice(1);
     const menuMap = new Map();
 
     // Proper CSV parser for quoted fields/commas
@@ -158,7 +169,7 @@ async function loadMenuAndCategories() {
   } catch (err) {
     console.error(err);
     const grid = document.getElementById('menu-grid');
-    if (grid) grid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-20">Menu loading... (Check menu.csv)</p>';
+    if (grid) grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-20">Menu could not load. Refresh the page or open it from localhost.</p>';
   }
 }
 
