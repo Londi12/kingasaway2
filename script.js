@@ -1,5 +1,8 @@
 
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+try {
+  localStorage.removeItem('cart');
+} catch (e) {}
+let cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
 
 function renderCart() {
   const cartItemsForm = document.getElementById('cart-items-form');
@@ -17,7 +20,7 @@ function renderCart() {
     customerForm.style.display = 'none';
     if (widgetTitle) widgetTitle.innerHTML = 'Your Royal Cart is<br/>Empty';
     if (widgetTitleCart) widgetTitleCart.textContent = 'Your Royal Cart is Empty';
-    localStorage.setItem('cart', '[]');
+    sessionStorage.setItem('cart', '[]');
     syncCartNavCount();
     return;
   }
@@ -36,7 +39,7 @@ function renderCart() {
   const itemCount = cart.reduce((sum, i) => sum + i.qty, 0);
   if (widgetTitle) widgetTitle.innerHTML = `Cart<br/>${itemCount} items`;
   if (widgetTitleCart) widgetTitleCart.textContent = `Cart: ${itemCount} items`;
-  localStorage.setItem('cart', JSON.stringify(cart));
+  sessionStorage.setItem('cart', JSON.stringify(cart));
   syncCartNavCount();
 }
 
@@ -257,7 +260,7 @@ function renderCartModal() {
     totalEl.classList.add('hidden');
     customerForm.style.display = 'none';
     if (widgetTitle) widgetTitle.textContent = 'Your Royal Cart is Empty';
-    localStorage.setItem('cart', '[]');
+    sessionStorage.setItem('cart', '[]');
     return;
   }
 
@@ -273,7 +276,7 @@ function renderCartModal() {
   totalEl.classList.remove('hidden');
   customerForm.style.display = 'block';
   if (widgetTitle) widgetTitle.textContent = `Cart: ${cart.reduce((sum, i) => sum + i.qty, 0)} items`;
-  localStorage.setItem('cart', JSON.stringify(cart));
+  sessionStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function syncCartNavCount() {
@@ -300,11 +303,13 @@ function syncCartNavCount() {
 
 function openCartModal() {
   document.getElementById('cart-modal')?.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
   renderCartModal();
 }
 
 function closeCartModal() {
   document.getElementById('cart-modal')?.classList.add('hidden');
+  document.body.style.overflow = '';
 }
 
 function checkoutModal() {
