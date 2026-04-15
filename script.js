@@ -1,8 +1,5 @@
 
-try {
-  localStorage.removeItem('cart');
-} catch (e) {}
-let cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+let cart = [];
 
 function renderCart() {
   const cartItemsForm = document.getElementById('cart-items-form');
@@ -20,7 +17,6 @@ function renderCart() {
     customerForm.style.display = 'none';
     if (widgetTitle) widgetTitle.innerHTML = 'Your Royal Cart is<br/>Empty';
     if (widgetTitleCart) widgetTitleCart.textContent = 'Your Royal Cart is Empty';
-    sessionStorage.setItem('cart', '[]');
     syncCartNavCount();
     return;
   }
@@ -39,7 +35,6 @@ function renderCart() {
   const itemCount = cart.reduce((sum, i) => sum + i.qty, 0);
   if (widgetTitle) widgetTitle.innerHTML = `Cart<br/>${itemCount} items`;
   if (widgetTitleCart) widgetTitleCart.textContent = `Cart: ${itemCount} items`;
-  sessionStorage.setItem('cart', JSON.stringify(cart));
   syncCartNavCount();
 }
 
@@ -260,7 +255,6 @@ function renderCartModal() {
     totalEl.classList.add('hidden');
     customerForm.style.display = 'none';
     if (widgetTitle) widgetTitle.textContent = 'Your Royal Cart is Empty';
-    sessionStorage.setItem('cart', '[]');
     return;
   }
 
@@ -276,7 +270,6 @@ function renderCartModal() {
   totalEl.classList.remove('hidden');
   customerForm.style.display = 'block';
   if (widgetTitle) widgetTitle.textContent = `Cart: ${cart.reduce((sum, i) => sum + i.qty, 0)} items`;
-  sessionStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function syncCartNavCount() {
@@ -336,6 +329,11 @@ function checkoutModal() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  cart = [];
+  try {
+    localStorage.removeItem('cart');
+    sessionStorage.removeItem('cart');
+  } catch (e) {}
   renderCart();
   renderCartModal();
   syncCartNavCount();
