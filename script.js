@@ -270,14 +270,17 @@ function renderCartModal() {
 function syncCartNavCount() {
   const count = cart.reduce((sum, i) => sum + i.qty, 0);
   const badge = document.getElementById('cart-nav-count');
-  if (!badge) return;
+  const mobileBadge = document.getElementById('mobile-cart-count');
 
-  if (count > 0) {
-    badge.textContent = count;
-    badge.classList.remove('hidden');
-  } else {
-    badge.classList.add('hidden');
-  }
+  [badge, mobileBadge].forEach(el => {
+    if (!el) return;
+    if (count > 0) {
+      el.textContent = count;
+      el.classList.remove('hidden');
+    } else {
+      el.classList.add('hidden');
+    }
+  });
 }
 
 function openCartModal() {
@@ -320,6 +323,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const cartBtn = document.getElementById('cart-nav-btn');
   if (cartBtn) cartBtn.addEventListener('click', openCartModal);
+
+  const mobileCartBtn = document.getElementById('mobile-cart-btn');
+  if (mobileCartBtn) {
+    mobileCartBtn.addEventListener('click', () => {
+      openCartModal();
+      document.getElementById('mobile-menu')?.classList.add('hidden');
+    });
+  }
 
   const closeBtn = document.getElementById('close-cart-modal');
   if (closeBtn) closeBtn.addEventListener('click', closeCartModal);
